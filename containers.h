@@ -139,7 +139,7 @@ public:
     T* operator [] (uint8_t i) { return x[i]; }
 
     // Multiply the current matrix with another matrix (rhs)
-    Matrix44& operator * (const Matrix44& v) const
+    Matrix44 operator * (const Matrix44& v) const
     {
         Matrix44 tmp;
         multiply (*this, v, tmp);
@@ -147,6 +147,9 @@ public:
         return tmp;
     }
 
+    Matrix44& operator *=(const Matrix44& v){
+      return (*this = (*this * v));
+    }
 
     static void multiply(const Matrix44<T> &a, const Matrix44& b, Matrix44 &c)
     {
@@ -196,7 +199,7 @@ public:
     }
 
     template <typename S>
-    Vec3<S> operator *=(Vec3<S> &src){
+    Vec3<S> operator *=(Vec3<S> src){
       Vec3<S> temp;
       auto w = src[0] * x[0][3] + src[1] * x[1][3] + src[2] * x[2][3] + x[3][3];
       temp.x = (src[0] * x[0][0] + src[1] * x[1][0] + src[2] * x[2][0] + x[3][0])/w;
@@ -205,7 +208,7 @@ public:
       return temp;
     }
     template <typename S>
-    Vec3<S> operator *(Vec3<S> &src){
+    Vec3<S> operator *(Vec3<S> src){
       return (*this *= src);
     }
 
@@ -347,3 +350,4 @@ public:
 };
 
 typedef Matrix44<float> Matrix44f;
+typedef Matrix44<float> Matrix3f;
