@@ -114,7 +114,9 @@ int main(int argc, char** argv) {
   }
   //Initialize OpenGL and GLUT
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
+  glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
+  glEnable(GL_MULTISAMPLE);
   glutInitWindowSize(640, 480);
   glutInitWindowPosition(50, 50);
   glutCreateWindow(title);
