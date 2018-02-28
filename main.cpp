@@ -35,47 +35,19 @@ void line(float x, float y, float x1, float y1){
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
   glColor3f(0, 0, 1);
-  auto v1 = mat * Vec3f(0, 0, 0);
-  auto v2 = mat * Vec3f(0, 0, 1);
-  auto v3 = mat * Vec3f(0, 1, 0);
-  auto v4 = mat * Vec3f(1, 0, 0);
-    std::cout << v1.x << ',' << v1.y << ',' << v1.z << '\t';
-    std::cout << v2.x << ',' << v2.y << ',' << v2.z << '\t';
-    std::cout << v3.x << ',' << v3.y << ',' << v3.z << '\t';
-    std::cout << v4.x << ',' << v4.y << ',' << v4.z << '\n';
   glBegin(GL_TRIANGLES);
-    glVertex2f(v1.x, v1.y);
-    glVertex2f(v2.x, v2.y);
-    glVertex2f(v3.x, v3.y);
-
-glColor3f(1, 0, 0);
-    glVertex2f(v1.x, v1.y);
-    glVertex2f(v2.x, v2.y);
-    glVertex2f(v4.x, v4.y);
-
-glColor3f(0, 1, 0);
-    glVertex2f(v1.x, v1.y);
-    glVertex2f(v4.x, v4.y);
-    glVertex2f(v3.x, v3.y);
-
-glColor3f(1, 1, 1);
-    glVertex2f(v4.x, v4.y);
-    glVertex2f(v2.x, v2.y);
-    glVertex2f(v3.x, v3.y);
-    // int count = 0;
-    // for(auto&f: map){
-    //   auto v1 = mat * Vec3f(vertices[f[0] - 1]);
-    //   auto v2 = mat *Vec3f(vertices[f[1] - 1]);
-    //   auto v3 = mat * Vec3f(vertices[f[2] - 1]);
-    //   std::cout << "Iteration: " << ++count << '\n';
-    //   std::cout << v1.x << ',' << v1.y << ',' << v1.z << '\t';
-    //   std::cout << v2.x << ',' << v2.y << ',' << v2.z << '\t';
-    //   std::cout << v3.x << ',' << v3.y << ',' << v3.z << '\n';
-    //   std::cout << "-----" << '\n';
-    //   glVertex3f(v1.x, v1.y, v1.z);
-    //   glVertex3f(v2.x, v2.y, v2.z);
-    //   glVertex3f(v3.x, v3.y, v3.z);
-    // }
+    for(auto&f: map){
+      auto v1 = mat * Vec3f(vertices[f[0] - 1]);
+      auto v2 = mat * Vec3f(vertices[f[1] - 1]);
+      auto v3 = mat * Vec3f(vertices[f[2] - 1]);
+      std::cout << v1.x << ',' << v1.y << ',' << v1.z << '\t';
+      std::cout << v2.x << ',' << v2.y << ',' << v2.z << '\t';
+      std::cout << v3.x << ',' << v3.y << ',' << v3.z << '\n';
+      std::cout << "-----" << '\n';
+      glVertex3f(v1.x, v1.y, v1.z);
+      glVertex3f(v2.x, v2.y, v2.z);
+      glVertex3f(v3.x, v3.y, v3.z);
+    }
   glEnd();
   glFlush();
  glutSwapBuffers();
