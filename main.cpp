@@ -3,11 +3,13 @@
 #include <iostream>
 #include <vector>
 #include "containers.h"
+#include "objParser.h"
 #define PI 3.14159
 #define PI180 PI/180
 float angleZ = 0, angleX = 0, angleY = 0;
 char title[] = "3D Shapes with animation";
-
+std::vector<std::vector<float>> vertices;
+std::vector<std::vector<int>> map;
 //Matrices for rotation along each axis
 Matrix44f matZ, matX, matY;
 Matrix44f matIdentity(1, 0, 0, 0,
@@ -15,13 +17,6 @@ Matrix44f matIdentity(1, 0, 0, 0,
   0, 0, 1, 0,
   0, 0, 0, 1);
 Matrix44f mat = matIdentity;
-
-//The vertices for the object
-float vertices[][3] = {{0.5f, 2, 0.5f},{0, 0, 0}, {1, 0, 0}, {0, 0, 1},
-                      {1, 0, 1}};
-
-//Vector to hold all vectors
-std::vector<Vec3f> v;
 
 //Draw a point
 void point(float x, float y){
@@ -40,23 +35,48 @@ void line(float x, float y, float x1, float y1){
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
   glColor3f(0, 0, 1);
-  auto t = mat * v[0];//TOP
-  auto s = mat * v[1];///000
-  line(t.x, t.y, s.x, s.y);
-  s = mat * v[2];
-  line(t.x, t.y, s.x, s.y);
-  s = mat * v[3];
-  line(t.x, t.y, s.x, s.y);
-  s = mat * v[4]; //101
-  line(t.x, t.y, s.x, s.y);
-  t = mat * v[3];
-  line(t.x, t.y, s.x, s.y);
-  t = mat * v[2];//100
-  line(t.x, t.y, s.x, s.y);
-  s = mat * v[1];//000
-  line(t.x, t.y, s.x, s.y);
-  t = mat * v[3];//100
-  line(t.x, t.y, s.x, s.y);
+  auto v1 = mat * Vec3f(0, 0, 0);
+  auto v2 = mat * Vec3f(0, 0, 1);
+  auto v3 = mat * Vec3f(0, 1, 0);
+  auto v4 = mat * Vec3f(1, 0, 0);
+    std::cout << v1.x << ',' << v1.y << ',' << v1.z << '\t';
+    std::cout << v2.x << ',' << v2.y << ',' << v2.z << '\t';
+    std::cout << v3.x << ',' << v3.y << ',' << v3.z << '\t';
+    std::cout << v4.x << ',' << v4.y << ',' << v4.z << '\n';
+  glBegin(GL_TRIANGLES);
+    glVertex2f(v1.x, v1.y);
+    glVertex2f(v2.x, v2.y);
+    glVertex2f(v3.x, v3.y);
+
+glColor3f(1, 0, 0);
+    glVertex2f(v1.x, v1.y);
+    glVertex2f(v2.x, v2.y);
+    glVertex2f(v4.x, v4.y);
+
+glColor3f(0, 1, 0);
+    glVertex2f(v1.x, v1.y);
+    glVertex2f(v4.x, v4.y);
+    glVertex2f(v3.x, v3.y);
+
+glColor3f(1, 1, 1);
+    glVertex2f(v4.x, v4.y);
+    glVertex2f(v2.x, v2.y);
+    glVertex2f(v3.x, v3.y);
+    // int count = 0;
+    // for(auto&f: map){
+    //   auto v1 = mat * Vec3f(vertices[f[0] - 1]);
+    //   auto v2 = mat *Vec3f(vertices[f[1] - 1]);
+    //   auto v3 = mat * Vec3f(vertices[f[2] - 1]);
+    //   std::cout << "Iteration: " << ++count << '\n';
+    //   std::cout << v1.x << ',' << v1.y << ',' << v1.z << '\t';
+    //   std::cout << v2.x << ',' << v2.y << ',' << v2.z << '\t';
+    //   std::cout << v3.x << ',' << v3.y << ',' << v3.z << '\n';
+    //   std::cout << "-----" << '\n';
+    //   glVertex3f(v1.x, v1.y, v1.z);
+    //   glVertex3f(v2.x, v2.y, v2.z);
+    //   glVertex3f(v3.x, v3.y, v3.z);
+    // }
+  glEnd();
   glFlush();
  glutSwapBuffers();
 }
@@ -107,12 +127,9 @@ void keyPress(unsigned char key, int x, int y){
   glutPostRedisplay();
 }
 int main(int argc, char** argv) {
-  //Push all the vertices to a vector of Vec3f
-  for (size_t i = 0; i < 8; i++) {
-    Vec3f j(vertices[i][0], vertices[i][1], vertices[i][2]);
-    v.push_back(j);
-  }
-  //Initialize OpenGL and GLUT
+  parseFile("house.obj", vertices, map);
+
+  // //Initialize OpenGL and GLUT
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
   glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);

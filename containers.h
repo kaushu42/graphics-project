@@ -42,7 +42,7 @@ public:
     Vec3() : x(T(0)), y(T(0)), z(T(0)) {}
     Vec3(T xx) : x(xx), y(xx), z(xx) {}
     Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
-
+    Vec3(std::vector<T> v):x(v[0]), y(v[1]), z(v[2]){}
     // const operators
     Vec3 operator + (const Vec3 &v) const
     { return Vec3(x + v.x, y + v.y, z + v.z); }
