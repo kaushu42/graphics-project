@@ -34,9 +34,11 @@ void line(float x, float y, float x1, float y1){
 
 void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-  glColor3f(0, 0, 1);
+  glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+  glColor3f(0, 0, 0);
   glBegin(GL_TRIANGLES);
     for(auto&f: map){
+
       auto v1 = mat * Vec3f(vertices[f[0] - 1]);
       auto v2 = mat * Vec3f(vertices[f[1] - 1]);
       auto v3 = mat * Vec3f(vertices[f[2] - 1]);
